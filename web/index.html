@@ -9,6 +9,18 @@
       #caption-container {
         display: none;
       }
+
+      #play-icon {
+        background-color: var(--primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -52,7 +64,9 @@
           .then((res) => res.json())
           .then((res) => {
             captionContainer.textContent = res["caption"];
-            console.log(res);
+            captionContainer.innerHTML +=
+              '<span id="play-icon" onclick="play()"><img src="/play.svg" width="20" /></span>';
+            play();
           })
           .catch((err) => {
             captionContainer.style.color = "red";
@@ -61,7 +75,7 @@
           })
           .finally(() => {
             loader.style.display = "none";
-            captionContainer.style.display = "block";
+            captionContainer.style.display = "flex";
           });
       };
 
@@ -77,6 +91,11 @@
           type = base64WithType[0].split(";")[0].split("/")[1];
         };
         fr.readAsDataURL(e.target.files[0]);
+      };
+
+      const play = () => {
+        const sound = new Audio("/audio");
+        sound.play();
       };
     </script>
   </body>

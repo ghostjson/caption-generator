@@ -1,2 +1,5 @@
 Flask
 transformers
+soundfile
+datasets
+sentencepiece
