@@ -1,0 +1,6 @@
+{
+  "appId": "com.example.app",
+  "appName": "visual-guide",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

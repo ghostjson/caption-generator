@@ -1,3 +1,1 @@
 # Caption Generator
-
-()[screenshot.png]
