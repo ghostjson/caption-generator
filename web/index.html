@@ -65,8 +65,10 @@
           .then((res) => {
             captionContainer.textContent = res["caption"];
             captionContainer.innerHTML +=
-              '<span id="play-icon" onclick="play()"><img src="/play.svg" width="20" /></span>';
-            play();
+              '<span id="play-icon" onclick="play(' +
+              res["audio_id"] +
+              ')"><img src="/play.svg" width="20" /></span>';
+            play(res["audio_id"]);
           })
           .catch((err) => {
             captionContainer.style.color = "red";
@@ -93,8 +95,8 @@
         fr.readAsDataURL(e.target.files[0]);
       };
 
-      const play = () => {
-        const sound = new Audio("/audio");
+      const play = (id) => {
+        const sound = new Audio("/audio/" + id);
         sound.play();
       };
     </script>
