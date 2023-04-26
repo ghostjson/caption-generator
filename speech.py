@@ -2,14 +2,15 @@ from transformers import SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5Hif
 import torch
 import soundfile as sf
 from datasets import load_dataset
-import base64
+import uuid
 
 processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
 model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
 vocoder = SpeechT5HifiGan.from_pretrained("microsoft/speecht5_hifigan")
 
 def textToSpeech(text):
-    audio_path = "temp/audio/stage.wav"
+    id = uuid.uuid4()
+    audio_path = "temp/audio/{}.wav".format(id)
     inputs = processor(text=text, return_tensors="pt")
 
     # load xvector containing speaker's voice characteristics from a dataset
@@ -20,7 +21,7 @@ def textToSpeech(text):
 
     sf.write(audio_path, speech.numpy(), samplerate=16000)
 
-    return 'Done'
+    return id
 
 
 

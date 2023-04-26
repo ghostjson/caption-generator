@@ -1,19 +1,22 @@
 from flask import Flask, request, send_from_directory
 import base64
 
+from flask_cors import CORS
+
 from app import generateCaption
 from speech import textToSpeech
 
 app = Flask(__name__)
 
+CORS(app)
 
 @app.get('/')
 def index_page():
     return send_from_directory('web', 'index.html')
 
-@app.get('/audio')
-def get_audio():
-    return send_from_directory('temp/audio', 'stage.wav')
+@app.get('/audio/<id>')
+def get_audio(id):
+    return send_from_directory('temp/audio', id + '.wav')
 
 @app.get('/<path:path>')
 def _static(path):
@@ -31,10 +34,11 @@ def get_image_caption():
         fh.write(base64.urlsafe_b64decode(image_in_base64))
 
     caption = generateCaption([file_path])
-    textToSpeech(caption[0])
+    id = textToSpeech(caption[0])
 
     response = {
         'caption': caption[0],
+        'audio_id': id
     }
 
     return response

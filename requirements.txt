@@ -3,3 +3,4 @@ transformers
 soundfile
 datasets
 sentencepiece
+flask-cors
