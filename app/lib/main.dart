@@ -1,20 +1,20 @@
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:audiofileplayer/audiofileplayer.dart';
-import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:visual/camera.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
-
-int currentPageIndex = 0;
+import 'package:visual/home.dart';
+import 'package:visual/server.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Box box = await Hive.openBox('app');
 
   runApp(const App());
 }
@@ -29,7 +29,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   Audio? audio;
 
-  int currentPageIndex = 0;
+  int currentPageIndex = 1;
 
   Future<void> sendRequest(String base64Image) async {
     final uri = Uri.parse('http://192.168.1.2:5000/api/generate');
@@ -108,166 +108,4 @@ class _AppState extends State<App> {
 }
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.green,
-      child: Stack(
-        children: [
-          const Positioned.fill(
-              child: CameraApp()
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(bottom: 20),
-                child: const FloatingActionButton(
-                  onPressed: null,
-                  backgroundColor: Color.fromRGBO(103, 58, 183, 1),
-                  child: Icon(Icons.circle, color: Color.fromRGBO(31, 31, 31, 1)),
-                )
-              )
-            ]
-          )
-        ],
-      )
-    );
-  }
-}
-
-class ServerPage extends StatefulWidget {
-  const ServerPage({Key? key}) : super(key: key);
-
-  @override
-  State<ServerPage> createState() => _ServerPageState();
-}
-
-class _ServerPageState extends State<ServerPage> {
-  
-  var serverLive = true;
-  
-  Widget renderPage(serverLive) {
-    if(serverLive) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/server-connected.svg'),
-            const SizedBox(height: 10),
-            const Text('Server Connection Established',
-              style: TextStyle(
-                  color: Color.fromRGBO(113, 195, 134, 1),
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold
-              ),),
-            const SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    onPressed: (){
-                      debugPrint('Update server clicked');
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(30, 12, 30, 12),
-                        backgroundColor: const Color.fromRGBO(103, 58, 183, 1)
-                    ),
-                    child: const Text(
-                      'Update Server',
-                      style: TextStyle(
-                          fontSize: 18
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }else {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/server-disconnected.svg'),
-            const SizedBox(height: 10),
-            const Text('Server Connection Lost',
-              style: TextStyle(
-                  color: Color.fromRGBO(237, 113, 97, 1),
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold
-              ),),
-            const SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: (){
-                    debugPrint('Retry clicked');
-                  },
-                  style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.fromLTRB(30, 12, 30, 12),
-                      backgroundColor: const Color.fromRGBO(103, 58, 183, 1)
-                  ),
-                  child: const Text(
-                    'Retry',
-                    style: TextStyle(
-                        fontSize: 18
-                    ),
-                  ),
-
-                ),
-                const SizedBox(width: 15,),
-                ElevatedButton(
-                    onPressed: (){
-                      debugPrint('Update server clicked');
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.fromLTRB(30, 12, 30, 12),
-                        backgroundColor: const Color.fromRGBO(103, 58, 183, 1)
-                    ),
-                    child: const Text(
-                      'Update Server',
-                      style: TextStyle(
-                          fontSize: 18
-                      ),
-                    )
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: const Color.fromRGBO(31, 31, 31, 1),
-      child: renderPage(serverLive)
-        // child: SvgPicture.asset('assets/server-disconnected.svg'),
-    );
-  }
-}
 
