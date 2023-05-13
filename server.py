@@ -10,13 +10,21 @@ app = Flask(__name__)
 
 CORS(app)
 
+
 @app.get('/')
 def index_page():
     return send_from_directory('web', 'index.html')
 
+
+@app.get('/live')
+def status():
+    return "OK"
+
+
 @app.get('/audio/<id>')
 def get_audio(id):
     return send_from_directory('temp/audio', id + '.wav')
+
 
 @app.get('/<path:path>')
 def _static(path):
@@ -42,6 +50,7 @@ def get_image_caption():
     }
 
     return response
+
 
 if __name__ == "__main__":
     port = 5000
