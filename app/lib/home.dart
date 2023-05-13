@@ -109,8 +109,8 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(bottom: 20),
                       child: FloatingActionButton(
                         onPressed: cameraBtnClicked,
-                        backgroundColor: const Color.fromRGBO(103, 58, 183, 1),
-                        child: const Icon(Icons.circle, color: Color.fromRGBO(31, 31, 31, 1)),
+                        backgroundColor: const Color.fromRGBO(31, 31, 31, 1),
+                        child: const Icon(Icons.circle, color: Color.fromRGBO(66, 66, 66, 1), size: 40,),
                       )
                   )
                 ]
