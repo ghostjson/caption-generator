@@ -4,9 +4,7 @@ import 'dart:convert';
 import 'package:audiofileplayer/audiofileplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:http/http.dart' as http;
 import 'package:visual/home.dart';
 import 'package:visual/server.dart';
 
@@ -27,32 +25,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  Audio? audio;
 
-  int currentPageIndex = 1;
-
-  Future<void> sendRequest(String base64Image) async {
-    final uri = Uri.parse('http://192.168.1.2:5000/api/generate');
-
-    debugPrint('Make HTTP request to server (${uri.toString()})');
-
-    // post request
-    var response = await http.post(
-        uri,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode({
-          'image': base64Image,
-          'extension': 'jpg'
-        }));
-    var decoded = json.decode(response.body);
-    debugPrint('Got response from server with body $decoded');
-
-     audio = Audio.loadFromRemoteUrl('http://192.168.1.2:5000/audio/${decoded['audio_id']}');
-     audio?.play();
-     debugPrint('Played successfully!');
-  }
+  int currentPageIndex = 0;
 
   Widget getPage(currentPageIndex){
     switch(currentPageIndex){

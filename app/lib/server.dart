@@ -34,6 +34,7 @@ class _ServerPageState extends State<ServerPage> {
 
     controller.text = serverUrl;
 
+    connectToServer();
  }
 
   @override
