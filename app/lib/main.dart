@@ -7,6 +7,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:visual/home.dart';
 import 'package:visual/server.dart';
+import 'package:visual/settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
 
-  int currentPageIndex = 0;
+  int currentPageIndex = 2;
 
   Widget getPage(currentPageIndex){
     switch(currentPageIndex){
@@ -37,7 +38,7 @@ class _AppState extends State<App> {
       case 1:
         return const ServerPage();
       case 2:
-        return const Placeholder();
+        return const SettingsPage();
       default:
         return const Placeholder();
     }
