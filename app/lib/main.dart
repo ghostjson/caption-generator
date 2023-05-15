@@ -27,7 +27,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
 
-  int currentPageIndex = 2;
+  int currentPageIndex = 0;
 
   Widget getPage(currentPageIndex){
     switch(currentPageIndex){

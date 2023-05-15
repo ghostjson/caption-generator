@@ -42,7 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsTile.navigation(
                 leading: const Icon(Icons.people_alt),
                 title: const Text('About'),
-                value: const Text('About app'),
+                value: const Text('App description'),
                 onPressed: (context){
                   showAboutDialog(
                     context: context,

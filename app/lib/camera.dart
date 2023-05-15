@@ -48,7 +48,8 @@ class _CameraAppState extends State<CameraApp> {
   Widget build(BuildContext context) {
     if (!controller.value.isInitialized) {
       return Container();
+    }else {
+      return CameraPreview(controller);
     }
-    return CameraPreview(controller);
   }
 }
