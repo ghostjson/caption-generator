@@ -62,7 +62,7 @@ class _ServerPageState extends State<ServerPage> {
     return showDialog<String>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Test Dialog'),
+          title: const Text('Connect to server'),
           content: TextField(
             autofocus: true,
             decoration: const InputDecoration(hintText: 'Enter text'),

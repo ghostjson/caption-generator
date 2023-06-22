@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   Audio? audio;
   Box box = Hive.box('app');
+  String caption = "";
 
   @override
   void initState() {
@@ -58,7 +59,19 @@ class _HomePageState extends State<HomePage> {
     audio = Audio.loadFromRemoteUrl('$serverUrl/audio/${decoded['audio_id']}');
     audio?.play();
     debugPrint('Played successfully!');
+
+    setState(() {
+      try {
+        bool isCaptionEnabled = box.get('isCaptionEnabled');
+        if(isCaptionEnabled){
+          caption = decoded['caption'];
+        }
+      }catch(err){
+        debugPrint('Error with isCaptionEnabled settings');
+      }
+    });
   }
+
 
   void cameraBtnClicked() {
     debugPrint('camera clicked');
@@ -81,6 +94,7 @@ class _HomePageState extends State<HomePage> {
         await sendRequest(base64);
 
         Navigator.of(context).pop();
+
       }
     }).catchError((error) {
       print(error);
@@ -99,6 +113,22 @@ class _HomePageState extends State<HomePage> {
           children: [
             const Positioned.fill(
                 child: CameraApp()
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 50),
+                  width: double.infinity,
+                  alignment: Alignment.topLeft,
+                  child: Text(caption, style: const TextStyle(
+                    fontSize: 20,
+                    backgroundColor: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),),
+                )
+              ],
             ),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

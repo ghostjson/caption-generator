@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -9,6 +10,24 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+
+  Box box = Hive.box('app');
+  late bool isCaptionEnabled;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    try{
+      isCaptionEnabled = box.get('isCaptionEnabled');
+    }catch(err){
+      box.put('isCaptionEnabled', false);
+      isCaptionEnabled = false;
+    }
+
+  }
 
   SettingsThemeData settingsTheme() {
     return const SettingsThemeData(
@@ -51,6 +70,21 @@ class _SettingsPageState extends State<SettingsPage> {
                     applicationLegalese: 'This app is licensed updated MIT License'
                   );
                 },
+              ),
+              SettingsTile.switchTile(
+                onToggle: (value) {
+                  if(value){
+                    box.put('isCaptionEnabled', true);
+                  }else {
+                    box.put('isCaptionEnabled', false);
+                  }
+                  setState(() {
+                    isCaptionEnabled = box.get('isCaptionEnabled');
+                  });
+                },
+                initialValue: isCaptionEnabled,
+                leading: const Icon(Icons.sort_by_alpha),
+                title: const Text('Enable caption'),
               )
 
             ],
